@@ -31,3 +31,5 @@ The application is built with the **T3 stack**, using **Next.js** for server-sid
 - **Frontend**: Next js, Tailwind CSS, TRPC, Zod
 - **Backend**: Next js, Prisma, MongoDB
 - **UI Components**: Shadcn UI, React-Charts js, Lucide (icons)
+
+**Deployment Link : https://thee-wallet.vercel.app**
