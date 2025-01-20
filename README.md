@@ -18,14 +18,11 @@ This is a **Wallet Web Application** designed to help users manage and track the
 
 ## Installation
 
-To run this project execute the following in your terminal:
+To run this project execute the following codes in your terminal:
 
-1. **Clone the repository:**
-
-   git clone https://github.com/ELOXPro/theeWallet.git
-   cd theeWallet
-   npm install
-   npm run dev
+   **- git clone https://github.com/ELOXPro/theeWallet.git**
+   **- npm install**
+  **- npm run dev**
 
 ## Technology Stack
 
