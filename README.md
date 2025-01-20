@@ -18,19 +18,16 @@ This is a **Wallet Web Application** designed to help users manage and track the
 
 ## Installation
 
-To run this project execute the following in your terminal:
+To run this project execute the following codes in your terminal:
 
-1. **Clone the repository:**
-
-   git clone https://github.com/ELOXPro/theeWallet.git
-   cd theeWallet
-   npm install
-   npm run dev
+- **git clone https://github.com/ELOXPro/theeWallet.git**
+- **npm install**
+- **npm run dev**
 
 ## Technology Stack
 
 The application is built with the **T3 stack**, using **Next.js** for server-side rendering, **MongoDB** for data storage, and **Tailwind CSS** for styling.
 
-**Frontend**: Next js, Tailwind CSS, TRPC, Zod
-**Backend**: Next js,Prisma, MongoDB
-**UI Components**: Shadcn UI, React-Charts js, Lucide (icons)
+- **Frontend**: Next js, Tailwind CSS, TRPC, Zod
+- **Backend**: Next js, Prisma, MongoDB
+- **UI Components**: Shadcn UI, React-Charts js, Lucide (icons)
