@@ -24,7 +24,7 @@ export default async function Home() {
     <HydrateClient>
       <main className="flex flex-col items-center justify-center p-2">
         {/* Navigation Menu */}
-        <Menu />
+        <Menu userId = {userId}/>
 
         {/* Dashboard Layout */}
         <div className="grid h-1/2 w-full grid-cols-1 lg:grid-cols-10 items-center justify-center gap-y-2 gap-x-0 md:gap-4">
