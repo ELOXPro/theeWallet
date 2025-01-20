@@ -33,7 +33,7 @@ const formSchema = z.object({
 
 export default function SignUp() {
   const router = useRouter();
-
+  const utils = api.useUtils();
   // Initialize the React Hook Form with Zod resolver
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,6 +64,8 @@ export default function SignUp() {
           if (res?.status === 401) {
             toast.error(res.error);
           } else {
+            
+            void utils.invalidate();
             router.push("/"); // Redirect to the home page
           }
         });

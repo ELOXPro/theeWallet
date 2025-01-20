@@ -29,12 +29,12 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
-import { CalendarIcon, Edit} from "lucide-react";
+import { CalendarIcon, Edit } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "../ui/calendar";
@@ -147,7 +147,8 @@ function ProfileForm({ userId, setOpen, id }: SignUpFormProps) {
   }
 
   function handleSubmit() {
-    if (!value.id ||
+    if (
+      !value.id ||
       !value.description ||
       !value.type ||
       !value.amount ||
@@ -181,6 +182,20 @@ function ProfileForm({ userId, setOpen, id }: SignUpFormProps) {
     setLoading(true);
     void updateTransaction.mutate(fields);
   }
+
+  useEffect(() => {
+    if (transaction) {
+      setValue({
+        id: transaction.accountId,
+        description: transaction.description,
+        type: transaction.type,
+        amount: transaction.amount,
+        category: transaction.category,
+        date: transaction.date,
+        transfer: "",
+      });
+    }
+  }, [transaction, id]);
 
   return (
     <div className={"grid items-start gap-2 py-4"}>

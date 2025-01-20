@@ -31,6 +31,7 @@ const formSchema = z.object({
 
 // SignIn component
 export default function SignIn() {
+  const utils = api.useUtils();
   const router = useRouter(); // Router instance
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema), // Zod resolver for validation
@@ -53,6 +54,7 @@ export default function SignIn() {
           if (res?.status === 401) {
             toast.error(res.error); // Show error if login fails
           } else {
+            void utils.invalidate();
             router.push("/"); // Redirect to home page
           }
         });

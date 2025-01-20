@@ -62,9 +62,6 @@ const formSchema = z.object({
     message: "Name must be at least 2 characters.",
   }),
   amount: z.coerce.number(),
-  category: z.string().min(1, {
-    message: "Please select a category.",
-  }),
   date: z.date().optional(),
 });
 
@@ -131,7 +128,6 @@ function ProfileForm({ userId, setOpen }: SignUpFormProps) {
     defaultValues: {
       name: "",
       amount: 0,
-      category: "",
       date: undefined,
     },
   });
@@ -154,6 +150,7 @@ function ProfileForm({ userId, setOpen }: SignUpFormProps) {
   });
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState<string>("");
+  console.log(value);
   const [date, setDate] = useState<Date | undefined>(undefined);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -177,9 +174,7 @@ function ProfileForm({ userId, setOpen }: SignUpFormProps) {
         <FormField
           control={form.control}
           name="name"
-          render={(
-            { field: _field },
-          ) => (
+          render={({ field: _field }) => (
             <FormItem>
               <FormLabel>Budget Name</FormLabel>
               <FormControl>
@@ -203,41 +198,26 @@ function ProfileForm({ userId, setOpen }: SignUpFormProps) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field: _field }) => (
-            <FormItem>
-              <FormLabel>Budget Category</FormLabel>
-              <FormControl>
-                <Select
-                  onValueChange={(value) => setValue(value)}
-                  defaultValue={value}
-                >
-                  <SelectTrigger className="w-full capitalize">
-                    <SelectValue placeholder="Select Budget Category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="food & drinks">Food & Drinks</SelectItem>
-                    <SelectItem value="clothing">Clothing</SelectItem>
-                    <SelectItem value="loan">Debts</SelectItem>
-                    <SelectItem value="investment">Investment</SelectItem>
-                    <SelectItem value="entertainment">Entertainment</SelectItem>
-                    {categories?.map(
-                      (category) =>
-                        category && (
-                          <SelectItem key={category.id} value={category.name}>
-                            {category.name}
-                          </SelectItem>
-                        ),
-                    )}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <Select onValueChange={(value) => setValue(value)} defaultValue={value}>
+          <SelectTrigger className="w-full capitalize">
+            <SelectValue placeholder="Select Budget Category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="food & drinks">Food & Drinks</SelectItem>
+            <SelectItem value="clothing">Clothing</SelectItem>
+            <SelectItem value="loan">Debts</SelectItem>
+            <SelectItem value="investment">Investment</SelectItem>
+            <SelectItem value="entertainment">Entertainment</SelectItem>
+            {categories?.map(
+              (category) =>
+                category && (
+                  <SelectItem key={category.id} value={category.name}>
+                    {category.name}
+                  </SelectItem>
+                ),
+            )}
+          </SelectContent>
+        </Select>
         <Popover>
           <PopoverTrigger asChild>
             <Button
