@@ -1,0 +1,101 @@
+// Prisma client generator
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Database connection configuration
+datasource db {
+  provider = "mongodb" // Using MongoDB as the database provider
+  url      = env("DATABASE_URL") // Connection URL stored in environment variables
+}
+
+// Account model: Stores third-party account details for users
+model Account {
+  id                     String @id @default(uuid()) @map("_id") @db.ObjectId
+  userId                 String @db.ObjectId // Foreign key for the associated user
+  type                   String
+  provider               String
+  providerAccountId      String
+  refresh_token          String? // Optional refresh token
+  access_token           String? // Optional access token
+  expires_at             Int? // Token expiration timestamp
+  token_type             String?
+  scope                  String?
+  id_token               String? // Optional ID token
+  session_state          String?
+  refresh_token_expires_in Int? // Optional refresh token expiration time
+  user                   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Enforce unique combination of provider and providerAccountId
+  @@unique([provider, providerAccountId])
+}
+
+// Session model: Tracks user sessions
+model Session {
+  id           String @id @default(uuid()) @map("_id") @db.ObjectId
+  sessionToken String @unique // Unique session token
+  userId       String @db.ObjectId // Foreign key for the associated user
+  expires      DateTime // Session expiration time
+  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// User model: Represents users of the application
+model User {
+  id           String @id @default(uuid()) @map("_id") @db.ObjectId
+  name         String
+  email        String @unique // Enforce unique email
+  password     String
+  accounts     Account[] // One-to-many relationship with Account
+  accountsW    AccountW[] // One-to-many relationship with AccountW
+  sessions     Session[] // One-to-many relationship with Session
+  categories   Category[] // One-to-many relationship with Category
+  transactions Transaction[] // One-to-many relationship with Transaction
+  budgets      Budget[] // One-to-many relationship with Budget
+}
+
+// AccountW model: Represents individual user accounts (e.g., bank, mobile money, etc.)
+model AccountW {
+  id        String @id @default(uuid()) @map("_id") @db.ObjectId
+  userId    String @db.ObjectId // Foreign key for the associated user
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String // Account name
+  balance   Float // Current balance
+  Transactions Transaction[] // One-to-many relationship with Transaction
+
+  // Enforce unique combination of userId and name
+  @@unique([userId, name])
+}
+
+// Transaction model: Tracks user transactions
+model Transaction {
+  id          String @id @default(uuid()) @map("_id") @db.ObjectId
+  userId      String @db.ObjectId // Foreign key for the associated user
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountId   String @db.ObjectId // Foreign key for the associated account
+  account     AccountW @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  amount      Float // Transaction amount
+  type        String // Transaction type (e.g., income, expense)
+  date        DateTime @default(now()) // Transaction date
+  category    String // Associated category
+  description String // Optional transaction description
+}
+
+// Category model: Represents expense and income categories
+model Category {
+  id      String @id @default(uuid()) @map("_id") @db.ObjectId
+  userId  String @db.ObjectId // Foreign key for the associated user
+  user    User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name    String // Category name
+  type    String // Category type (e.g., income, expense)
+}
+
+// Budget model: Manages user budgets
+model Budget {
+  id        String @id @default(uuid()) @map("_id") @db.ObjectId
+  userId    String @db.ObjectId // Foreign key for the associated user
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount    Float // Budget amount
+  category  String // Associated category
+  name      String // Budget name
+  startDate DateTime @default(now()) // Budget start date
+}
