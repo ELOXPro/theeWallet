@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Transaction } from "./History";
+import type { Transaction } from "./History";
 import { Line } from "react-chartjs-2";
 import { format } from "date-fns";
 

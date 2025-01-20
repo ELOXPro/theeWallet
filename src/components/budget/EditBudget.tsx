@@ -25,7 +25,6 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -34,19 +33,19 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
-import { CalendarIcon, Edit, Plus } from "lucide-react";
+import { CalendarIcon, Edit } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "../ui/calendar";
@@ -76,7 +75,7 @@ export function EditBudget({ id, userId }: { userId: string; id: string }) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="w-auto m-1 h-full py-1">
+          <Button className="m-1 h-full w-auto py-1">
             <Edit size={6} />
           </Button>
         </DialogTrigger>
@@ -93,7 +92,7 @@ export function EditBudget({ id, userId }: { userId: string; id: string }) {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button className="w-full m-1 h-full py-1">
+        <Button className="m-1 h-full w-full py-1">
           <Edit size={6} />
         </Button>
       </DrawerTrigger>
@@ -118,8 +117,8 @@ function ProfileForm({ userId, setOpen, id }: SignUpFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: budget && budget.budget ? budget.budget.name : "",
-      amount: budget && budget.budget ? budget.budget.amount : 0,
+      name: budget?.budget?.name ?? "",
+      amount: budget?.budget?.amount ?? 0,
     },
   });
   const { data: categories } = api.user.listCategories.useQuery({
@@ -132,7 +131,7 @@ function ProfileForm({ userId, setOpen, id }: SignUpFormProps) {
         toast.success(data.result, { duration: 1000 });
         setLoading(false);
         setOpen(false);
-        utils.invalidate();
+        void utils.invalidate();
       } else {
         toast.error(data.result, { duration: 1000 });
         setLoading(false);
@@ -140,8 +139,14 @@ function ProfileForm({ userId, setOpen, id }: SignUpFormProps) {
     },
   });
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState(budget && budget.budget ? budget.budget.category : "");
-  const [date, setDate] = useState<Date | undefined>(budget && budget.budget ? budget.budget.startDate : undefined);
+  const [value, setValue] = useState(
+    budget?.budget?.category ?? ""
+,
+  );
+  const [date, setDate] = useState<Date | undefined>(
+    budget?.budget?.startDate ?? undefined
+,
+  );
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
@@ -149,11 +154,11 @@ function ProfileForm({ userId, setOpen, id }: SignUpFormProps) {
       name: values.name,
       amount: values.amount,
       category: value,
-      userId: userId as string,
+      userId: userId,
       date: date ? date : new Date(),
       id,
     };
-    updateBudget.mutate(fields);
+    void updateBudget.mutate(fields);
   }
 
   return (

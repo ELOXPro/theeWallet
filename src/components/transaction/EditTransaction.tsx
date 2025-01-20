@@ -29,7 +29,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
@@ -133,7 +134,7 @@ function ProfileForm({ userId, setOpen, id }: SignUpFormProps) {
         toast.success(data.result, { duration: 1000 });
         setOpen(false);
         setLoading(false);
-        utils.invalidate();
+        void utils.invalidate();
       } else {
         toast.error(data.result, { duration: 1000 });
         setLoading(false);
@@ -178,12 +179,9 @@ function ProfileForm({ userId, setOpen, id }: SignUpFormProps) {
       transfer: value.transfer,
     };
     setLoading(true);
-    updateTransaction.mutate(fields);
+    void updateTransaction.mutate(fields);
   }
 
-  useEffect(() => {
-    handleChange("", "transfer");
-  }, [value.type]);
   return (
     <div className={"grid items-start gap-2 py-4"}>
       <Select onValueChange={(value) => handleChange(value, "type")}>
@@ -244,7 +242,7 @@ function ProfileForm({ userId, setOpen, id }: SignUpFormProps) {
       <Input
         value={value.description}
         onChange={(e) =>
-          setValue((prev: any) => ({
+          setValue((prev) => ({
             ...prev,
             description: e.target.value,
           }))
@@ -255,7 +253,7 @@ function ProfileForm({ userId, setOpen, id }: SignUpFormProps) {
       <Input
         value={value.amount}
         onChange={(e) =>
-          setValue((prev: any) => ({
+          setValue((prev) => ({
             ...prev,
             amount: +e.target.value,
           }))

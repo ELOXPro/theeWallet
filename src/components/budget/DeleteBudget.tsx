@@ -25,15 +25,11 @@ export function DeleteBudget({ id }: { id: string }) {
       if (data.result.includes("Deleted")) {
         toast.success(data.result, { duration: 1000 });
         setLoading(false);
-        utils.invalidate();
+        void utils.invalidate();
       } else {
         toast.error(data.result, { duration: 1000 });
         setLoading(false);
       }
-    },
-    onError: (error) => {
-      toast.error(`Error: ${error.message}`, { duration: 2000 });
-      setLoading(false);
     },
   });
 

@@ -51,8 +51,8 @@ export default function Overview({ userId }: { userId: string }) {
   };
 
   useEffect(() => {
-    utils.invalidate();
-  }, [account]);
+    void utils.invalidate();
+  }, [account, utils]);
 
   return (
     <div className="flex w-full h-full col-span-3 flex-col gap-2 rounded-md border border-black p-2 shadow-md">

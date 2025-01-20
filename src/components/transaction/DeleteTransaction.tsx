@@ -25,7 +25,7 @@ export function DeleteTransaction({ id }: { id: string }) {
       if (data.result.includes("Deleted")) {
         toast.success(data.result, { duration: 1000 });
         setLoading(false);
-        utils.invalidate();
+        void utils.invalidate();
       } else {
         toast.error(data.result, { duration: 1000 });
         setLoading(false);
@@ -35,7 +35,7 @@ export function DeleteTransaction({ id }: { id: string }) {
 
   function handleDelete() {
     setLoading(true);
-    deleteTransaction.mutate(id);
+    void deleteTransaction.mutate(id);
   }
 
   return (

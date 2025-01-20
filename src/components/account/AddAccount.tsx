@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
@@ -95,15 +96,11 @@ function ProfileForm({ userId, setOpen }: SignUpFormProps) {
         toast.success(data.result, { duration: 1000 });
         setLoading(false);
         setOpen(false);
-        utils.invalidate();
+        void utils.invalidate();
       } else {
         toast.error(data.result, { duration: 1000 });
         setLoading(false);
       }
-    },
-    onError: (error) => {
-      toast.error(`Error: ${error.message}`, { duration: 2000 });
-      setLoading(false);
     },
   });
 
@@ -114,9 +111,9 @@ function ProfileForm({ userId, setOpen }: SignUpFormProps) {
     const fields = {
       name: values.name,
       balance: values.balance,
-      userId: userId as string,
+      userId: userId,
     };
-    createAccount.mutate(fields);
+    void createAccount.mutate(fields);
   };
 
   return (

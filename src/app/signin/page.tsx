@@ -122,7 +122,7 @@ export default function SignIn() {
         </Form>
         {/* Sign-Up Link */}
         <Link className="mt-4 block text-center" href="/signup">
-          Don't have an account?
+          Don&apos;t have an account?
         </Link>
       </div>
     </div>

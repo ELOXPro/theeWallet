@@ -8,7 +8,8 @@ import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerFooter, DrawerT
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Plus } from "lucide-react";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -84,7 +85,7 @@ function ProfileForm({ userId, setOpen }: { userId: string; setOpen: Dispatch<Se
     onSuccess: (data) => {
       toast[data.result.includes("Created") ? "success" : "error"](data.result, { duration: 1000 });
       setOpen(false);
-      utils.invalidate();
+      void utils.invalidate();
     },
   });
 
@@ -93,7 +94,7 @@ function ProfileForm({ userId, setOpen }: { userId: string; setOpen: Dispatch<Se
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
-    createCategory.mutate({ name: values.name, type: value, userId });
+    void createCategory.mutate({ name: values.name, type: value, userId });
   }
 
   return (

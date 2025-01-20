@@ -1,13 +1,47 @@
-'use client';
+"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { useEffect, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
@@ -103,7 +137,7 @@ function ProfileForm({ userId, setOpen }: SignUpFormProps) {
   });
   const { data: categories } = api.user.listCategories.useQuery({
     userId,
-    type: 'expense',
+    type: "expense",
   });
   const createBudget = api.account.createBudget.useMutation({
     onSuccess: (data) => {
@@ -111,19 +145,15 @@ function ProfileForm({ userId, setOpen }: SignUpFormProps) {
         toast.success(data.result, { duration: 1000 });
         setLoading(false);
         setOpen(false);
-        utils.invalidate();
+        void utils.invalidate();
       } else {
         toast.error(data.result, { duration: 1000 });
         setLoading(false);
       }
     },
-    onError: (error) => {
-      toast.error(`Error: ${error.message}`, { duration: 2000 });
-      setLoading(false);
-    },
   });
   const [loading, setLoading] = useState(false);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState<string>("");
   const [date, setDate] = useState<Date | undefined>(undefined);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -132,63 +162,90 @@ function ProfileForm({ userId, setOpen }: SignUpFormProps) {
       name: values.name,
       amount: values.amount,
       category: value,
-      userId: userId as string,
-      date: date || new Date(),
+      userId: userId,
+      date: date ?? new Date(),
     };
     createBudget.mutate(fields);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4 overflow-auto p-2">
-        <FormField control={form.control} name="name" render={({ field }) => (
-          <FormItem>
-            <FormLabel>Budget Name</FormLabel>
-            <FormControl>
-              <Input placeholder="Enter Budget Name" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )} />
-        <FormField control={form.control} name="amount" render={({ field }) => (
-          <FormItem>
-            <FormLabel>Account Budget Amount</FormLabel>
-            <FormControl>
-              <Input type="number" placeholder="Enter Amount" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )} />
-        <FormField control={form.control} name="category" render={({ field }) => (
-          <FormItem>
-            <FormLabel>Budget Category</FormLabel>
-            <FormControl>
-              <Select onValueChange={(value) => setValue(value)} defaultValue={value}>
-                <SelectTrigger className="w-full capitalize">
-                  <SelectValue placeholder="Select Budget Category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="food & drinks">Food & Drinks</SelectItem>
-                  <SelectItem value="clothing">Clothing</SelectItem>
-                  <SelectItem value="loan">Debts</SelectItem>
-                  <SelectItem value="investment">Investment</SelectItem>
-                  <SelectItem value="entertainment">Entertainment</SelectItem>
-                  {categories?.map((category) => category && (
-                    <SelectItem key={category.id} value={category.name}>
-                      {category.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )} />
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full space-y-4 overflow-auto p-2"
+      >
+        <FormField
+          control={form.control}
+          name="name"
+          render={(
+            { field: _field },
+          ) => (
+            <FormItem>
+              <FormLabel>Budget Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter Budget Name" {..._field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="amount"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Account Budget Amount</FormLabel>
+              <FormControl>
+                <Input type="number" placeholder="Enter Amount" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field: _field }) => (
+            <FormItem>
+              <FormLabel>Budget Category</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={(value) => setValue(value)}
+                  defaultValue={value}
+                >
+                  <SelectTrigger className="w-full capitalize">
+                    <SelectValue placeholder="Select Budget Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="food & drinks">Food & Drinks</SelectItem>
+                    <SelectItem value="clothing">Clothing</SelectItem>
+                    <SelectItem value="loan">Debts</SelectItem>
+                    <SelectItem value="investment">Investment</SelectItem>
+                    <SelectItem value="entertainment">Entertainment</SelectItem>
+                    {categories?.map(
+                      (category) =>
+                        category && (
+                          <SelectItem key={category.id} value={category.name}>
+                            {category.name}
+                          </SelectItem>
+                        ),
+                    )}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Popover>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className={cn("w-full justify-start text-left font-normal", !date && "text-muted-foreground")}
+              className={cn(
+                "w-full justify-start text-left font-normal",
+                !date && "text-muted-foreground",
+              )}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
               {date ? format(date, "PPP") : <span>Pick a Starting Date</span>}

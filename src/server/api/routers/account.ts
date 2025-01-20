@@ -1,11 +1,9 @@
-import { date, z } from "zod";
+import { z } from "zod";
 import { ObjectId } from "bson";
 import {
   createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
+  protectedProcedure
 } from "@/server/api/trpc";
-import { start } from "repl";
 
 export const accountRouter = createTRPCRouter({
   create: protectedProcedure

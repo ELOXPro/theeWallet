@@ -8,8 +8,6 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { EditBudget } from "../budget/EditBudget";
-import { DeleteBudget } from "../budget/DeleteBudget";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useState } from "react";

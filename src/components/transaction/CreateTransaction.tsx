@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Label } from "@/components/ui/label";
-import { use, useEffect, useState } from "react";
+import { useState } from "react";
 import { CalendarIcon, Plus } from "lucide-react";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
@@ -90,7 +90,7 @@ function ProfileForm({ userId }: { userId: string }) {
       if (data.result.includes("Created")) {
         toast.success(data.result, { duration: 1000 });
         setLoading(false);
-        utils.invalidate();
+        void utils.invalidate();
       } else {
         toast.error(data.result, { duration: 1000 });
         setLoading(false);
@@ -135,12 +135,8 @@ function ProfileForm({ userId }: { userId: string }) {
       transfer: value.transfer,
     };
     setLoading(true);
-    createTransaction.mutate(fields);
+    void createTransaction.mutate(fields);
   }
-
-  useEffect(() => {
-    handleChange("", "transfer");
-  }, [value.id]);
   return (
     <div className={"grid items-start gap-2 py-4"}>
       <Select onValueChange={(value) => handleChange(value, "type")}>
@@ -201,7 +197,7 @@ function ProfileForm({ userId }: { userId: string }) {
       <Input
         value={value.description}
         onChange={(e) =>
-          setValue((prev: any) => ({
+          setValue((prev) => ({
             ...prev,
             description: e.target.value,
           }))
@@ -212,7 +208,7 @@ function ProfileForm({ userId }: { userId: string }) {
       <Input
         value={value.amount}
         onChange={(e) =>
-          setValue((prev: any) => ({
+          setValue((prev) => ({
             ...prev,
             amount: +e.target.value,
           }))
