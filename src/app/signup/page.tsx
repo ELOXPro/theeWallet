@@ -70,7 +70,6 @@ export default function SignUp() {
           }
         });
       } else {
-        // Handle creation error
         toast.error(data.result, { duration: 2000 });
         setLoading(false);
       }
@@ -90,19 +89,15 @@ export default function SignUp() {
 
   return (
     <div className="flex h-screen flex-col items-center justify-center space-y-8 text-xs">
-      {/* Application header */}
       <h1 className="text-3xl font-extrabold">TheeWallet</h1>
 
-      {/* Sign-up form container */}
       <div className="rounded-md border-2 border-secondary p-4">
         <h1 className="mb-4 w-full border-b text-center text-xl font-bold">
           Create a Wallet
         </h1>
 
         <Form {...form}>
-          {/* Form submission handler */}
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {/* Username Field */}
             <FormField
               control={form.control}
               name="username"
@@ -117,7 +112,6 @@ export default function SignUp() {
               )}
             />
 
-            {/* Email Field */}
             <FormField
               control={form.control}
               name="email"
@@ -132,7 +126,6 @@ export default function SignUp() {
               )}
             />
 
-            {/* Password Field */}
             <FormField
               control={form.control}
               name="password"
@@ -150,8 +143,7 @@ export default function SignUp() {
                 </FormItem>
               )}
             />
-
-            {/* Submit Button */}
+            
             <Button disabled={loading} type="submit">
               {loading ? "Creating..." : "Submit"}
             </Button>

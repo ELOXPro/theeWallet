@@ -41,12 +41,13 @@ export const accountRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
+        userId: z.string(),
         name: z.string().toLowerCase(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const existingAccount = await ctx.db.accountW.findFirst({
-        where: { name: input.name },
+        where: { name: input.name, userId: input.userId },
       });
 
       if (existingAccount) {
@@ -63,6 +64,27 @@ export const accountRouter = createTRPCRouter({
       return editAccount
         ? { result: "Account Updated" }
         : { result: "Failed to update Account!" };
+    }),
+
+  delete: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const deleteAccount = await ctx.db.accountW.delete({
+        where: { id: input },
+      });
+
+      return deleteAccount
+        ? { result: "Account Deleted" }
+        : { result: "Failed to delete Account!" };
+    }),
+    load: protectedProcedure
+    .input( z.string(),
+    ).query(async ({ ctx, input }) => {
+      const account = await ctx.db.accountW.findFirst({
+        where: { id: input },
+      });
+
+      return account  
     }),
 
   list: protectedProcedure.input(z.string()).query(async ({ ctx, input }) => {

@@ -41,7 +41,7 @@ export default function History({ userId }: { userId: string }) {
   });
 
   return (
-    <div className="grid h-1/2 w-full grid-cols-1 lg:grid-cols-10 items-center justify-center gap-4 py-4">
+    <div className="grid h-auto w-full grid-cols-1 lg:grid-cols-10 items-center justify-center gap-2 py-2">
       <div className="col-span-6 h-full w-full flex flex-col rounded-md border border-black shadow-md p-2 gap-2">
         <div className="flex flex-col sm:flex-row w-full justify-between">
           <h1 className="text-2xl font-extrabold">History</h1>
@@ -114,7 +114,7 @@ export default function History({ userId }: { userId: string }) {
                 return (
                   <div
                     key={"budget?.data.id"}
-                    className="flex w-full items-center justify-center gap-2"
+                    className="flex w-full items-center justify-center"
                   >
                     <h1 className="text-sm font-bold capitalize">
                       No Transaction Data Found
@@ -154,7 +154,7 @@ export default function History({ userId }: { userId: string }) {
               );
             })
           ) : (
-            <h1 className="text-2xl font-extrabold">No Transactions Found</h1>
+            <h1 className="flex items-center justify-center w-full h-full text-2xl font-extrabold">No Transactions Found</h1>
           )}
         </div>
       </div>

@@ -1,8 +1,7 @@
-"use client"; // Enables client-side rendering
+"use client"; 
 
-// Imports
-import { zodResolver } from "@hookform/resolvers/zod"; // Resolver for Zod validation
-import { z } from "zod"; // Schema validation
+import { zodResolver } from "@hookform/resolvers/zod"; 
+import { z } from "zod"; 
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,15 +10,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"; // Form-related UI components
-import { Input } from "@/components/ui/input"; // Input component
-import Link from "next/link"; // Link for navigation
-import { signIn } from "next-auth/react"; // Authentication handler
-import { useRouter } from "next/navigation"; // Router for navigation
-import { useForm } from "react-hook-form"; // React Hook Form
-import { toast } from "sonner"; // Notification library
-import { api } from "@/trpc/react"; // tRPC API integration
-import { useState } from "react"; // State management
+} from "@/components/ui/form"; 
+import { Input } from "@/components/ui/input"; 
+import Link from "next/link"; 
+import { signIn } from "next-auth/react"; 
+import { useRouter } from "next/navigation"; 
+import { useForm } from "react-hook-form"; 
+import { toast } from "sonner"; 
+import { api } from "@/trpc/react";
+import { useState } from "react";
 
 // Form schema using Zod for validation
 const formSchema = z.object({
@@ -29,12 +28,11 @@ const formSchema = z.object({
   }),
 });
 
-// SignIn component
 export default function SignIn() {
   const utils = api.useUtils();
-  const router = useRouter(); // Router instance
+  const router = useRouter(); 
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema), // Zod resolver for validation
+    resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
       password: "",

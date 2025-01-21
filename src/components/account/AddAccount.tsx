@@ -40,7 +40,7 @@ export function AddAccount({ userId }: { userId: string }) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="w-full">
+          <Button variant={"outline"} className="w-full">
             <Plus size={24} />
             <h1>New Account</h1>
           </Button>

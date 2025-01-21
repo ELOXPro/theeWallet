@@ -77,7 +77,7 @@ model Transaction {
   type        String // Transaction type (e.g., income, expense)
   date        DateTime @default(now()) // Transaction date
   category    String // Associated category
-  description String // Optional transaction description
+  description String // transaction description
 }
 
 // Category model: Represents expense and income categories

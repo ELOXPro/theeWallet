@@ -1,16 +1,15 @@
-import "@/styles/globals.css"; // Global styles
+import "@/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans"; // Custom font
-import { type Metadata } from "next"; // Metadata type from Next.js
+import { GeistSans } from "geist/font/sans";
+import { type Metadata } from "next";
 
-import { TRPCReactProvider } from "@/trpc/react"; // TRPC provider for API interactions
-import { Toaster } from "@/components/ui/sonner"; // Notification system
-import Provider from "@/components/Provider"; // Additional providers (e.g., Auth, Theme)
+import { TRPCReactProvider } from "@/trpc/react";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
-  title: "TheeWallet", // Application title
-  description: "Manage your wallet with ease", // App description for SEO
-  icons: [{ rel: "icon", url: "/icon.png" }], // Favicon
+  title: "Dashboard || TheeWallet",
+  description: "Manage your wallet with ease",
+  icons: [{ rel: "icon", url: "/icon.png" }],
 };
 
 export default function RootLayout({
@@ -19,16 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        {/* Provider for TRPC to manage server-client communication */}
         <TRPCReactProvider>
-          {/* Global App Providers (e.g., Authentication, Themes) */}
-          <Provider>
-            {/* Render the page content */}
             {children}
-          </Provider>
         </TRPCReactProvider>
-        
-        {/* Toaster for notifications */}
         <Toaster />
       </body>
     </html>

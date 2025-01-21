@@ -51,6 +51,7 @@ import { CalendarIcon, Plus } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "../ui/calendar";
+import { AddCategory } from "../category/addCategory";
 
 interface SignUpFormProps {
   userId: string;
@@ -218,6 +219,7 @@ function ProfileForm({ userId, setOpen }: SignUpFormProps) {
             )}
           </SelectContent>
         </Select>
+        <AddCategory userId={userId} />
         <Popover>
           <PopoverTrigger asChild>
             <Button

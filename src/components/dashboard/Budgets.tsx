@@ -8,7 +8,7 @@ export default function Budgets({ userId }: { userId: string }) {
   const { data: budgets } = api.account.listBudget.useQuery(userId);
 
   return (
-    <div className="col-span-5 flex h-full w-full flex-col gap-2 rounded-md border border-black p-2 shadow-md">
+    <div className="col-span-1 sm:col-span-5 flex h-full w-full flex-col gap-2 rounded-md border border-black p-2 shadow-md">
       <div className="flex w-full justify-between gap-2">
         <h1 className="text-2xl font-extrabold">Budgets</h1>
         <div className="flex w-auto items-center gap-1">
@@ -70,7 +70,7 @@ export default function Budgets({ userId }: { userId: string }) {
             );
           })
         ) : (
-          <h1 className="text-2xl font-extrabold">No Budgets Found</h1>
+          <h1 className="flex items-center justify-center w-full h-full text-2xl font-extrabold">No Budgets Found</h1>
         )}
       </div>
     </div>

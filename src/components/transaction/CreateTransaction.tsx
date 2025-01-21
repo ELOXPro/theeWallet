@@ -37,7 +37,7 @@ export function CreateTransaction({ userId }: { userId: string }) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button>
+        <Button className="w-full">
           <Plus size={24} />
           <h1>New Transaction</h1>
         </Button>

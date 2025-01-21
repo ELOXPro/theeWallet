@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/select";
 import { api } from "@/trpc/react";
 import { useEffect, useState } from "react";
-import { CreateTransaction } from "../transaction/CreateTransaction";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 export default function Overview({ userId }: { userId: string }) {
@@ -32,8 +31,8 @@ export default function Overview({ userId }: { userId: string }) {
       {
         label: "Rwandan Francs",
         data: [
-          datas ? datas.incomesBalance : 0,
-          datas ? datas.expensesBalance : 0,
+          datas ? datas.incomesBalance : 1,
+          datas ? datas.expensesBalance : 1,
         ],
         backgroundColor: ["rgba(0, 0, 0, 1)", "rgba(255, 0, 0, 1)"],
         size: 1,
@@ -55,13 +54,13 @@ export default function Overview({ userId }: { userId: string }) {
   }, [account, utils]);
 
   return (
-    <div className="flex w-full h-full col-span-3 flex-col gap-2 rounded-md border border-black p-2 shadow-md">
+    <div className="flex w-full h-full col-span-1 sm:col-span-3 flex-col gap-2 rounded-md border border-black p-2 shadow-md">
       <div className="flex w-full justify-between gap-2">
         <Select
           onValueChange={(value) => setAccount(value)}
           defaultValue={account}
         >
-          <SelectTrigger className="w-[180px] capitalize">
+          <SelectTrigger className="w-1/2 capitalize">
             <SelectValue placeholder="Select an Account" />
           </SelectTrigger>
           <SelectContent>
@@ -83,9 +82,6 @@ export default function Overview({ userId }: { userId: string }) {
       </div>
       <div className="flex h-full w-full items-center justify-center">
         <Doughnut data={data} options={options} />
-      </div>
-      <div className="flex w-full items-center justify-end gap-1">
-        <CreateTransaction userId={userId} />
       </div>
     </div>
   );
