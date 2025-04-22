@@ -35,8 +35,8 @@ export default async function Home() {
 
         <div className="flex w-full items-center justify-center gap-1 text-xs font-bold">
           Developed by{" "}
-          <a href="https://eloxpro.netlify.app" className="text-red-500">
-            ELOXPro
+          <a href="https://elox.vercel.app" className="text-red-500">
+            ELOX
           </a>
         </div>
       </main>
