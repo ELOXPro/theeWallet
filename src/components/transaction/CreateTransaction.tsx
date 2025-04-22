@@ -94,6 +94,7 @@ function ProfileForm({ userId }: { userId: string }) {
       } else {
         toast.error(data.result, { duration: 1000 });
         setLoading(false);
+        void utils.invalidate();
       }
     },
   });
@@ -103,13 +104,7 @@ function ProfileForm({ userId }: { userId: string }) {
   }
 
   function handleSubmit() {
-    if (
-      !value.id ||
-      !value.description ||
-      !value.type ||
-      !value.amount ||
-      !value.date
-    ) {
+    if (!value.id || !value.type || !value.amount || !value.date) {
       toast.error("Select all inputs", {
         duration: 1000,
         className: "!text-red-600",
@@ -127,7 +122,7 @@ function ProfileForm({ userId }: { userId: string }) {
     const fields = {
       accountId: value.id,
       type: value.type,
-      description: value.description,
+      description: value.description || "none",
       date: value.date,
       category: value.category || "none",
       amount: value.amount,
@@ -192,17 +187,21 @@ function ProfileForm({ userId }: { userId: string }) {
           </Select>
         </div>
       )}
-      <Label>Description</Label>
-      <Input
-        value={value.description}
-        onChange={(e) =>
-          setValue((prev) => ({
-            ...prev,
-            description: e.target.value,
-          }))
-        }
-        placeholder="Enter a Description"
-      />
+      {value.type !== "transfer" && (
+        <>
+          <Label>Description</Label>
+          <Input
+            value={value.description}
+            onChange={(e) =>
+              setValue((prev) => ({
+                ...prev,
+                description: e.target.value,
+              }))
+            }
+            placeholder="Enter a Description"
+          />
+        </>
+      )}
       <Label>Amount</Label>
       <Input
         value={value.amount}
@@ -215,68 +214,78 @@ function ProfileForm({ userId }: { userId: string }) {
         type="number"
         placeholder="10"
       />
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant={"outline"}
-            className={cn(
-              "w-full justify-start text-left font-normal",
-              !value.date && "text-muted-foreground",
-            )}
+      {value.type !== "transfer" && (
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-full justify-start text-left font-normal",
+                !value.date && "text-muted-foreground",
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {value.date ? (
+                format(value.date, "PPP")
+              ) : (
+                <span>Pick a date</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={value.date}
+              onSelect={(e) => handleChange(e, "date")}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+      )}
+      {value.type !== "transfer" && (
+        <>
+          <Select
+            onValueChange={(value) => handleChange(value, "category")}
+            defaultValue={value.category}
           >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {value.date ? format(value.date, "PPP") : <span>Pick a date</span>}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            mode="single"
-            selected={value.date}
-            onSelect={(e) => handleChange(e, "date")}
-            initialFocus
-          />
-        </PopoverContent>
-      </Popover>
-      <Select
-        onValueChange={(value) => handleChange(value, "category")}
-        defaultValue={value.category}
-      >
-        <SelectTrigger className="w-full capitalize">
-          <SelectValue placeholder="Select a Category" />
-        </SelectTrigger>
-        <SelectContent>
-          {value.type === "income" && (
-            <>
-              <SelectItem value="salary">Salary</SelectItem>
-              <SelectItem value="profits">Profits</SelectItem>
-              <SelectItem value="loan">Loans</SelectItem>
-              <SelectItem value="investment">Investment</SelectItem>
-            </>
-          )}
-          {value.type === "expense" && (
-            <>
-              <SelectItem value="food & drinks">Food & Drinks</SelectItem>
-              <SelectItem value="clothing">Clothing</SelectItem>
-              <SelectItem value="loan">Debts</SelectItem>
-              <SelectItem value="investment">Investment</SelectItem>
-              <SelectItem value="entertainment">Entertainment</SelectItem>
-            </>
-          )}
-          {categories?.map(
-            (category) =>
-              category && (
-                <SelectItem
-                  className="capitalize"
-                  key={category.id}
-                  value={category.name}
-                >
-                  {category.name}
-                </SelectItem>
-              ),
-          )}
-        </SelectContent>
-      </Select>
-      <AddCategory userId={userId} />
+            <SelectTrigger className="w-full capitalize">
+              <SelectValue placeholder="Select a Category" />
+            </SelectTrigger>
+            <SelectContent>
+              {value.type === "income" && (
+                <>
+                  <SelectItem value="salary">Salary</SelectItem>
+                  <SelectItem value="profits">Profits</SelectItem>
+                  <SelectItem value="loan">Loans</SelectItem>
+                  <SelectItem value="investment">Investment</SelectItem>
+                </>
+              )}
+              {value.type === "expense" && (
+                <>
+                  <SelectItem value="food & drinks">Food & Drinks</SelectItem>
+                  <SelectItem value="clothing">Clothing</SelectItem>
+                  <SelectItem value="loan">Debts</SelectItem>
+                  <SelectItem value="investment">Investment</SelectItem>
+                  <SelectItem value="entertainment">Entertainment</SelectItem>
+                </>
+              )}
+              {categories?.map(
+                (category) =>
+                  category && (
+                    <SelectItem
+                      className="capitalize"
+                      key={category.id}
+                      value={category.name}
+                    >
+                      {category.name}
+                    </SelectItem>
+                  ),
+              )}
+            </SelectContent>
+          </Select>
+          <AddCategory userId={userId} />{" "}
+        </>
+      )}
       <Button disabled={loading ? true : false} onClick={handleSubmit}>
         Create
       </Button>

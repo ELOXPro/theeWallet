@@ -43,7 +43,7 @@ export const transactionRouter = createTRPCRouter({
         });
       } else if (input.type == "transfer" && input.transfer) {
         const deliverAccount = await ctx.db.accountW.findFirst({
-          where: { name: input.transfer, userId: account.userId },
+          where: { id: input.transfer },
         });
 
         if (!deliverAccount) {
@@ -65,7 +65,7 @@ export const transactionRouter = createTRPCRouter({
         });
       }
 
-      const createTransaction = await ctx.db.transaction.create({
+      const createTransaction = !input.transfer && await ctx.db.transaction.create({
         data: {
           id: new ObjectId().toHexString(),
           accountId: input.accountId,
@@ -79,8 +79,8 @@ export const transactionRouter = createTRPCRouter({
       });
 
       return createTransaction
-        ? { result: "Transaction Created" }
-        : { result: "Failed to Create Transaction!" };
+        ?  { result: "Transaction Created" }
+        : input.transfer ? {result: "Money Transferred"} : { result: "Failed to Create Transaction!" };
     }),
 
   balances: protectedProcedure
