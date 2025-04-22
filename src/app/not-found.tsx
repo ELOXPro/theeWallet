@@ -1,6 +1,4 @@
-import GoBack from '@/components/ui/go-back';
-import Image from 'next/image';
-
+import GoBack from "@/components/ui/go-back";
 export const metadata = {
   title: "Not Found || Inkingi System",
   description: "Page Not Found in Inkingi System.",
@@ -9,12 +7,13 @@ export const metadata = {
 
 export default function NotFound() {
   return (
-    <div className='w-screen h-screen flex gap-6 items-center justify-center'>
-      <Image src="/icon.png" alt=" theeWallet Logo" width={50} height={50} priority />
-      <div className='border-l border-secondary gap-4 flex flex-col p-2'>
-      <h1 className='text-primary text-xl animate-pulse font-bold'>Page Not Found</h1>
-      <GoBack />
+    <div className="flex h-screen w-screen items-center justify-center gap-6">
+      <div className="flex flex-col gap-4 border-l border-secondary p-2">
+        <h1 className="animate-pulse text-xl font-bold text-primary">
+          Page Not Found
+        </h1>
+        <GoBack />
       </div>
     </div>
-  )
+  );
 }

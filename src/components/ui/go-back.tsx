@@ -11,7 +11,7 @@ export default function GoBack(){
   };
   return (
     <button
-    className='border-y border-primary hover:border-secondary rounded-md text-sm p-1 font-bold text-primary duration-200 transition-all'
+    className='border-y border-primary hover:border-secondary rounded-md text-sm p-1 font-bold text-primary` duration-200 transition-all'
     onClick={handleGoBack}>Go Back</button>
   )
 }

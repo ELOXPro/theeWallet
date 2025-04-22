@@ -118,13 +118,13 @@ function ProfileForm({ setOpen, id }: SignUpFormProps) {
 
   return (
     <div className="w-full space-y-4 overflow-auto p-2">
-      <Label>New Category Name</Label>
+      <Label>Edit Category Name</Label>
       <Input
         placeholder="Enter Account Name"
         onChange={(e) => setName(e.target.value)}
       />
       <Button onClick={onSubmit} className="w-full" type="submit" disabled={loading ? true : false}>
-        {loading ? "Renaming..." : "Rename"}
+        {loading ? "Updating..." : "Update"}
       </Button>
     </div>
   );

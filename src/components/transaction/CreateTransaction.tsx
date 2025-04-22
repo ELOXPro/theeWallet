@@ -108,7 +108,6 @@ function ProfileForm({ userId }: { userId: string }) {
       !value.description ||
       !value.type ||
       !value.amount ||
-      !value.category ||
       !value.date
     ) {
       toast.error("Select all inputs", {
@@ -130,7 +129,7 @@ function ProfileForm({ userId }: { userId: string }) {
       type: value.type,
       description: value.description,
       date: value.date,
-      category: value.category,
+      category: value.category || "none",
       amount: value.amount,
       transfer: value.transfer,
     };
@@ -266,7 +265,11 @@ function ProfileForm({ userId }: { userId: string }) {
           {categories?.map(
             (category) =>
               category && (
-                <SelectItem className="capitalize" key={category.id} value={category.name}>
+                <SelectItem
+                  className="capitalize"
+                  key={category.id}
+                  value={category.name}
+                >
                   {category.name}
                 </SelectItem>
               ),

@@ -339,7 +339,7 @@ function ProfileForm({ userId, setOpen, id }: SignUpFormProps) {
       </Select>
       <AddCategory userId={userId} />
       <Button disabled={loading ? true : false} onClick={handleSubmit}>
-        Create
+        Update
       </Button>
     </div>
   );
